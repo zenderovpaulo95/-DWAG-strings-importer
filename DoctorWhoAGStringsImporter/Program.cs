@@ -485,19 +485,6 @@ namespace DoctorWhoAGStringsImporter
                                 break;
                             }
                         }
-
-                        /*if(((ch < 0x41) || ((ch > 0x5A) && (ch < 0x61)) || ((ch > 0x7A) && (ch < 0xBF)))
-                            && (ch == sym))
-                        {
-                            check[4] = check_str.Remove(0, 1);
-                        }*/
-
-                        /*if (((ch > 0x41) && (ch < 0x5A)) || ((ch > 0x61) && (ch < 0x7A)) || ((ch > 0x7A) && (ch < 0xBF)))
-                        {
-                            check[4] = check_str;
-                        }
-                        else if (ch > 0xBF) check[4] = check_str;
-                        else check[4] = check_str.Remove(0, 1);*/
                     }
 
                     xml.Add(new xmldata(check[2], check[1], check[4]));
@@ -586,31 +573,25 @@ namespace DoctorWhoAGStringsImporter
                                 {
                                     if (checkpath.ToLower().IndexOf(".xml") > 0)
                                     {
-                                        //xmlstrs = File.ReadAllLines(checkpath);
-
                                         byte[] tempxmlbin = File.ReadAllBytes(checkpath);
                                         xmlstrs = Bin2String(tempxmlbin, encoding_code);
                                         tempxmlbin = null;
 
                                         if (xmlstrs == null) xmlstrs = File.ReadAllLines(checkpath);
 
-                                        //if ((checkdirectory.IndexOf("Series1") > 0) || (checkdirectory.IndexOf("Series2") > 0))
-                                        //{
-                                            DirectoryInfo di = new DirectoryInfo(checkdirectory);
-                                            fi1 = di.GetFiles("*.lua", SearchOption.AllDirectories);
-                                            fi2 = di.GetFiles("*.evp", SearchOption.AllDirectories);
-
+                                        DirectoryInfo di = new DirectoryInfo(checkdirectory);
+                                        fi1 = di.GetFiles("*.lua", SearchOption.AllDirectories);
+                                        fi2 = di.GetFiles("*.evp", SearchOption.AllDirectories);
 
 										//Console.WriteLine(fi1.Length.ToString() + " " + fi2.Length.ToString() + " " + xmlstrs.Length.ToString());
 
-                                            if ((fi1.Length > 0) && (fi2.Length > 0))
-                                            {
-                                                List<xmldata> xml = new List<xmldata>();
-                                                readxml(ref xml, xmlstrs, sym[0], checkpath);
-                                                Console.Clear();
-                                                checkstrings(xml, fi1, fi2, true, encoding_code, false, null, null, null, isDialogTag, checkTag);
-                                            }
-                                        //}
+                                        if ((fi1.Length > 0) && (fi2.Length > 0))
+                                        {
+                                            List<xmldata> xml = new List<xmldata>();
+                                            readxml(ref xml, xmlstrs, sym[0], checkpath);
+                                            Console.Clear();
+                                            checkstrings(xml, fi1, fi2, true, encoding_code, false, null, null, null, isDialogTag, checkTag);
+                                        }
                                     }
                                 }
                             }
@@ -791,7 +772,7 @@ namespace DoctorWhoAGStringsImporter
                                                 evptxt = GetStringsData(evptxts, ".evp");
                                             }
 
-                                            checkstrings(xml, fi1, fi2, false, encoding_code, add_sym, sym, luatxt, evptxt, false, "");
+                                            checkstrings(xml, fi1, fi2, false, encoding_code, add_sym, sym, luatxt, evptxt, true, "");
 
                                             if (add_xml_sym)
                                             {
