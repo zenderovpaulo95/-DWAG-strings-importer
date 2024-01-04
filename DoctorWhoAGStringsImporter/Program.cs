@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.IO;
-using System.ComponentModel.Design;
-using System.Runtime.CompilerServices;
 
 namespace DoctorWhoAGStringsImporter
 {
@@ -191,12 +189,10 @@ namespace DoctorWhoAGStringsImporter
                         {
                             if (new_file)
                             {
-                                //unused_lua += fi1[i].Name + "\r\n";
                                 unused_lua.Add(fi1[i].Name);
                                 new_file = false;
                             }
 
-                            //unused_lua += lua[l] + "\r\n";
                             unused_lua.Add(lua[l]);
                         }
                         else if ((checkstr.IndexOf("::sid_") > 0) && (hasnt_id) && (!check_only))
@@ -278,7 +274,10 @@ namespace DoctorWhoAGStringsImporter
 
                                         if (add_sym)
                                         {
-                                            temp = evp[k].Substring(0, index) + sym + xmlex[l].text + "</WhatToSay>";
+                                            if (xmlex[l].text[0] > 0x7E || xmlex[l].text[0] == 0x20)
+                                            {
+                                                temp = evp[k].Substring(0, index) + sym + xmlex[l].text + "</WhatToSay>";
+                                            }
                                         }
 
                                         evp[k] = temp;
@@ -293,12 +292,10 @@ namespace DoctorWhoAGStringsImporter
                             {
                                 if (new_file)
                                 {
-                                    //unused_evp += fi2[j].Name + "\r\n";
                                     unused_evp.Add(fi2[j].Name);
                                     new_file = false;
                                 }
 
-                                //unused_evp += evp[k] + "\r\n";
                                 unused_evp.Add(evp[k]);
                             }
                             else if ((evp[k].IndexOf("SID_") > 0) && (evp[k].IndexOf("<WhatToSay>") > 0) && (hasnt_id) && (!check_only)
@@ -314,12 +311,10 @@ namespace DoctorWhoAGStringsImporter
                         {
                                 if (new_file)
                                 {
-                                    //unused_evp += fi2[j].Name + "\r\n";
                                     unused_evp.Add(fi2[j].Name);
                                     new_file = false;
                                 }
 
-                                //unused_evp += evp[k] + "\r\n";
                                 unused_evp.Add(evp[k]);
                         }
 
@@ -543,29 +538,6 @@ namespace DoctorWhoAGStringsImporter
             //ShowWindow(handle, SW_HIDE);
             ShowWindow(handle, SW_SHOW);
 
-            /*args = new string[7];
-            args[0] = "addsym";
-            args[1] = "~";
-            args[2] = "import";
-            args[3] = "C:\\Users\\123\\Desktop\\Doctor Who - The Adventure Game\\EP_5\\data\\Common\\Scripts\\EmmersionGameSidToActorScript.xml";
-            args[4] = "C:\\Users\\123\\Desktop\\Doctor Who - The Adventure Game\\EP_5\\data";
-            args[5] = "C:\\Users\\123\\Desktop\\Doctor Who\\Doctor Who\\DoctorWhoAGStringsImporter\\DoctorWhoAGStringsImporter\\bin\\Release\\unused_lua.txt";
-            args[6] = "C:\\Users\\123\\Desktop\\Doctor Who\\Doctor Who\\DoctorWhoAGStringsImporter\\DoctorWhoAGStringsImporter\\bin\\Release\\unused_evp.txt";*/
-            /*args = new string[4];
-            args[0] = "check";
-            args[1] = "Interact_Name";
-            args[2] = "C:\\Users\\123\\Desktop\\Doctor Who - The Adventure Game\\EP_5\\data\\Common\\Scripts\\EmmersionGameSidToActorScript.xml";
-            args[3] = "C:\\Users\\123\\Desktop\\Doctor Who - The Adventure Game\\EP_5\\data";*/
-            /*args = new string[8];
-            args[0] = "addsym";
-            args[1] = "~";
-            args[2] = "change";
-            args[3] = "C:\\Users\\123\\Desktop\\Doctor Who\\Doctor Who\\Doctor Who adventure games RESOURCES\\Release\\Steam\\Series1\\replace.txt";
-            args[4] = "import";
-            args[5] = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Doctor Who The Adventure Games\\Series1\\Data\\Common\\Scripts\\EmmersionGameSidToActorScript.xml";
-            args[6] = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Doctor Who The Adventure Games\\Series1\\Data";
-            args[7] = "C:\\Users\\123\\Desktop\\Doctor Who\\Doctor Who\\Doctor Who adventure games RESOURCES\\Release\\Steam\\Series1\\unused_lua.txt";*/
-
             if (args.Length > 0)
             {
                 FileInfo[] fi1, fi2;
@@ -629,7 +601,7 @@ namespace DoctorWhoAGStringsImporter
                                             fi2 = di.GetFiles("*.evp", SearchOption.AllDirectories);
 
 
-										Console.WriteLine(fi1.Length.ToString() + " " + fi2.Length.ToString() + " " + xmlstrs.Length.ToString());
+										//Console.WriteLine(fi1.Length.ToString() + " " + fi2.Length.ToString() + " " + xmlstrs.Length.ToString());
 
                                             if ((fi1.Length > 0) && (fi2.Length > 0))
                                             {
@@ -778,8 +750,6 @@ namespace DoctorWhoAGStringsImporter
                                     && (checkluatxt.ToLower().IndexOf(".txt") > 0))
                                 {
                                     List<xmldata> xml = new List<xmldata>();
-                                    //string[] xmlstrs = File.ReadAllLines(checkxmlpath);
-                                    //string[] luatxts = File.ReadAllLines(checkluatxt);
                                     byte[] tempxmlbin = File.ReadAllBytes(checkxmlpath);
                                     byte[] templuabin = File.ReadAllBytes(checkluatxt);
 
@@ -827,7 +797,7 @@ namespace DoctorWhoAGStringsImporter
                                             {
                                                 for(int x = 0; x < xmlstrs.Length; x++)
                                                 {
-                                                //if (needChange) xmlstrs[x] = changechars(xmlstrs[x], strs[1], strs[0]);
+
                                                     for(int z = 0; z < xml.Count; z++)
                                                     {
                                                         string id_str = Convert.ToInt32(xml[z].id).ToString();
@@ -889,7 +859,8 @@ namespace DoctorWhoAGStringsImporter
                 Console.Write(AppDomain.CurrentDomain.FriendlyName + " addsym ~ addxmlsym import \"C:\\Game Folder\\Series 1\\file.xml\" \"C:\\Game Folder\\Series 1\\\" \"C:\\unused_lua.txt\"\r\n");
                 Console.Write("Вариант 4:\r\n");
                 Console.Write(AppDomain.CurrentDomain.FriendlyName + " code 1251 addsym ~ addxmlsym import \"C:\\Game Folder\\Series 1\\file.xml\" \"C:\\Game Folder\\Series 1\\\" \"C:\\unused_lua.txt\"");
-                //Console.Read();
+                Console.Write("Вариант 5:\r\n");
+                Console.Write(AppDomain.CurrentDomain.FriendlyName + " change \"Путь к\\файлу для замены букв.txt\"... Далее можно комбинировать варианты 1-4\r\n");
             }
         }
     }
